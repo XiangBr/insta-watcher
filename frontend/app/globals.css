@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/* Light is the base. Dark is its own set of layered surfaces, not an inversion: the canvas is
+   the darkest layer, cards sit one step above it, and inputs one more. "Unconfirmed" is violet
+   in both on purpose, so it is never mistaken for a plain failure. */
+:root {
+  color-scheme: light;
+  --bg: #f4f5f8;
+  --surface: #ffffff;
+  --surface-2: #f1f3f7;
+  --fg: #12151c;
+  --muted: #667085;
+  --line: #e4e7ec;
+  --accent: #1f5eff;
+  --accent-fg: #ffffff;
+  --accent-soft: #e7eeff;
+  --ok: #0e8a5f;
+  --ok-soft: #e3f6ee;
+  --wait: #b25e09;
+  --wait-soft: #fdf0dc;
+  --fail: #c9302c;
+  --fail-soft: #fce8e6;
+  --unconf: #6b3fc4;
+  --unconf-soft: #efe8fb;
+  --card-shadow: 0 1px 2px rgb(16 24 40 / 0.04), 0 2px 8px rgb(16 24 40 / 0.05);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0e1014;
+  --surface: #171a21;
+  --surface-2: #1f232c;
+  --fg: #edeff4;
+  --muted: #9aa3b2;
+  --line: #2a2f3a;
+  --accent: #5b8cff;
+  --accent-fg: #0b1020;
+  --accent-soft: #172346;
+  --ok: #3fcb93;
+  --ok-soft: #12281f;
+  --wait: #f0a64a;
+  --wait-soft: #2e2312;
+  --fail: #ff7b72;
+  --fail-soft: #301a19;
+  --unconf: #b79bff;
+  --unconf-soft: #251c3b;
+  --card-shadow: 0 0 0 1px rgb(255 255 255 / 0.02);
+}
+
+/* No data-theme means "follow the system": the same dark set, behind the media query. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0e1014;
+    --surface: #171a21;
+    --surface-2: #1f232c;
+    --fg: #edeff4;
+    --muted: #9aa3b2;
+    --line: #2a2f3a;
+    --accent: #5b8cff;
+    --accent-fg: #0b1020;
+    --accent-soft: #172346;
+    --ok: #3fcb93;
+    --ok-soft: #12281f;
+    --wait: #f0a64a;
+    --wait-soft: #2e2312;
+    --fail: #ff7b72;
+    --fail-soft: #301a19;
+    --unconf: #b79bff;
+    --unconf-soft: #251c3b;
+    --card-shadow: 0 0 0 1px rgb(255 255 255 / 0.02);
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-wait: var(--wait);
+  --color-wait-soft: var(--wait-soft);
+  --color-fail: var(--fail);
+  --color-fail-soft: var(--fail-soft);
+  --color-unconf: var(--unconf);
+  --color-unconf-soft: var(--unconf-soft);
+  --shadow-card: var(--card-shadow);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+dialog::backdrop {
+  background: rgb(8 12 18 / 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Native radios, checkboxes and ranges follow the accent in both themes. */
+input[type="radio"],
+input[type="checkbox"] {
+  accent-color: var(--accent);
+}

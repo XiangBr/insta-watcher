@@ -1,0 +1,39 @@
+# The gateway: one address for everything.
+#
+# Meta calls /webhook and reads the legal pages; everything else is the dashboard. The admin
+# API (/api/v1) is only for the dashboard, which reaches it on the private network, so it is
+# closed here. With the dashboard on Vercel, ADMIN_API_HANDLER="reverse_proxy api:8000"
+# opens it (it still requires API_ADMIN_TOKEN).
+#
+# SITE_ADDRESS: a domain gets an automatic HTTPS certificate (ports 80 and 443 must reach this
+# container); ":80" serves plain HTTP for a proxy or a tunnel in front.
+
+{
+	admin off
+}
+
+{$SITE_ADDRESS::80} {
+	encode zstd gzip
+
+	# Meta webhooks are small; nothing in the dashboard uploads files.
+	request_body {
+		max_size 1MB
+	}
+
+	@public path /webhook /health /privacy /terms /data-deletion
+	handle @public {
+		reverse_proxy api:8000
+	}
+
+	handle /api/v1/* {
+		{$ADMIN_API_HANDLER:respond 404}
+	}
+
+	handle /docs* {
+		respond 404
+	}
+
+	handle {
+		reverse_proxy web:3000
+	}
+}

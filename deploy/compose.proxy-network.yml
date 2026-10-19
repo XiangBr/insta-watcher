@@ -1,0 +1,19 @@
+# For a reverse proxy that runs in its own Docker container (another Caddy, Traefik,
+# Nginx Proxy Manager...): the gateway joins that proxy's network, and the proxy forwards
+# your domain to http://insta-watcher-gateway-1:80. No port needs to be published.
+#
+# In .env:
+#   COMPOSE_FILE=docker-compose.yml:deploy/compose.proxy-network.yml
+#   PROXY_NETWORK=name_of_the_proxy_network     (docker network ls)
+#   HTTP_BIND=127.0.0.1:8080                    (still published locally, for checks)
+#
+# On Windows, separate the files with ";" instead of ":".
+
+services:
+  gateway:
+    networks: [internal, edge, proxy]
+
+networks:
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:?set PROXY_NETWORK in .env}

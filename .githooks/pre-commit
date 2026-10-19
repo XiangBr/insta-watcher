@@ -1,0 +1,12 @@
+#!/bin/sh
+# Bloqueia commit com segredo. Falha fechado: sem gitleaks, sem commit.
+# Ativar uma vez por clone: git config core.hooksPath .githooks
+if command -v gitleaks >/dev/null 2>&1; then
+  exec gitleaks git --staged --redact --no-banner
+fi
+if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+  exec docker run --rm -v "$(git rev-parse --show-toplevel):/repo" -w /repo \
+    zricethezav/gitleaks:latest git --staged --redact --no-banner /repo
+fi
+echo "pre-commit: gitleaks não encontrado. Instale (winget install gitleaks / apt install gitleaks) ou inicie o Docker." >&2
+exit 1

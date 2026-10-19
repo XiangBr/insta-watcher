@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# The admin CLI inside the running API container.
+#
+#   ./scripts/iw doctor       what is set up, what is missing, next step for each
+#   ./scripts/iw set-token    paste the Instagram token (no echo), stored encrypted
+#   ./scripts/iw subscribe    subscribe the account to the webhooks
+#   ./scripts/iw --help       every command
+set -euo pipefail
+cd "$(dirname "$0")/.."
+if [ -t 0 ] && [ -t 1 ]; then
+  exec docker compose exec api python -m app.cli "$@"
+fi
+exec docker compose exec -T api python -m app.cli "$@"
