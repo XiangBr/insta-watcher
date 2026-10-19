@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/banner.svg" alt="insta-watcher: comentou a palavra, recebeu no direct" width="100%">
+</p>
+
 # insta-watcher
 
 Automação de Instagram self-hosted e de código aberto. Alguém comenta uma palavra-chave no seu post ou reel e recebe o seu link por DM, pela API oficial da Meta. Junto vêm um Chat no direct com fluxos de botões e respostas com I.A., insights do perfil e análise de concorrentes. Tudo num painel seu, sem mensalidade por contato.
